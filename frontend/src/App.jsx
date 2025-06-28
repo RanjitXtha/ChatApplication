@@ -19,7 +19,6 @@ function App() {
       const response = await axios.get('/auth/getUser',{
         withCredentials:true
       })
-      console.log(response.data);
       dispatch(setCredentials(response.data))
       
 }catch(err){

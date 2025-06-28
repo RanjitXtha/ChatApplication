@@ -3,19 +3,16 @@ import User from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
 
 export const Login = async(req,res)=>{
-    console.log("req")
    try{
         const {email , password} = req.body;
         const user = await User.findOne({email});
 
         if (!user) {
-            console.log('User doesn\'t exist');
             return res.status(400).json({message: 'User does not exist' });
         }
     const isPasswordCorrect = await bcrypt.compare(password , user.password);
 
     if(!isPasswordCorrect){
-        console.log('Incorrect Password');
         return res.status(400).json({message:'Wrong Password'})
     }
 
@@ -33,12 +30,10 @@ export const Login = async(req,res)=>{
 }
 
 export const Signup= async(req,res)=>{
-     console.log("recieved");
     try{
         const {email,username,password} = req.body;
         const profilePic = req.file ? req.file.path : null;
-        console.log(profilePic + 'this is a profile')
-        console.log(username+email+profilePic);
+
         const userExists = await User.findOne({email});
 
         if(userExists){
@@ -69,10 +64,7 @@ export const LogOut= async(req,res)=>{
 }
 
 export const GetUser = async(req,res)=>{
-    console.log("Get user");
-    
     const user = req.user;
-    console.log(user)
     
     return res.status(200).json({
         userId:user._id,

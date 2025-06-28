@@ -6,7 +6,7 @@ import chatRouter from './routes/chat.route.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors'
 dotenv.config();
-const app = express();
+import {app,server} from './lib/socket.js'
 
 const PORT = process.env.PORT;
 app.use(express.json());
@@ -21,6 +21,6 @@ app.use(
 app.use('/api/auth',authRouter);
 app.use('/api/chat',chatRouter);
 
-app.listen(PORT,()=>{
+server.listen(PORT,()=>{
     DBConnection();
 });
