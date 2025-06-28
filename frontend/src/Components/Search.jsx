@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from '../utils/axios.js';
 import { useSelector } from 'react-redux';
+import { IoSearchOutline } from "react-icons/io5";
 
 const Search = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -41,20 +42,22 @@ const Search = () => {
   }
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-2">Welcome, {currentUser?.username}</h2>
-
-      <div className="mb-4">
+    <div className=''>
+    <div className="mb-4">
+      <div className='relative'>
+      <button onClick={searchUser} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+          <IoSearchOutline />
+        </button>
         <input
           type="text"
           placeholder="Search users..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border p-2 mr-2"
+          className="w-full bg-gray-700 border border-gray-600 rounded-2xl pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
         />
-        <button onClick={searchUser} className="bg-blue-500 text-white px-4 py-2 rounded">
-          Find
-        </button>
+      </div>
+       
+       
       </div>
 
       {results.length > 0 && (
