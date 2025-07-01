@@ -2,12 +2,12 @@ import { useState } from 'react';
 import axios from '../utils/axios.js';
 import { useSelector , useDispatch } from 'react-redux';
 import { IoSearchOutline } from "react-icons/io5";
-import { setCurrentChatUser , setCurrentChat } from '../utils/currentChat.js';
+import { setCurrentChatUser } from '../utils/currentChat.js';
 
 const Search = () => {
     const dispatch = useDispatch();
   const [search, setSearch] = useState('');
-  const [results, setResults] = useState([]); // 🆕 Store searched users
+  const [results, setResults] = useState([]); 
 
   const searchUser = async () => {
     if (!search.trim()) return; // avoid empty searches
@@ -17,7 +17,7 @@ const Search = () => {
         withCredentials: true,
       });
       console.log(res.data);
-      setResults(res.data.users); // 🆕 store users in state
+      setResults(res.data.users); 
     } catch (err) {
       console.log(err);
     }

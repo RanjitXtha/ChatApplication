@@ -5,8 +5,8 @@ import { setCurrentChatUser } from '../utils/currentChat';
 const Friend = ({user}) => {
 
   const currentChatId = useSelector(state=>state.currentChat.currentChatUser?._id);
-  
-  
+       const onlineUserIds = useSelector((state)=>state.currentChat.onlineUsers);
+
   const dispatch = useDispatch();
   const handleCurrentChatUser = (user)=>{
     dispatch(setCurrentChatUser(user));
@@ -25,9 +25,9 @@ const Friend = ({user}) => {
                   <img src= {user.profilePic} alt={user.username} className="w-12 h-12 bg-gray-600 rounded-2xl flex items-center justify-center text-xl">
                    
                   </img>
-                  {/* {contact.online && (
-                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-black rounded-full animate-pulse"></div>
-                  )} */}
+                  {onlineUserIds.includes(user._id) ? (
+                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full"></div>
+                  ):<div className="absolute -bottom-1 -right-1 w-4 h-4 bg-gray-500 rounded-full"></div>}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">

@@ -2,26 +2,36 @@ import React, { useEffect, useState } from 'react'
 import Search from '../Components/Search'
 import Friends from './Friends'
 import { useSelector } from 'react-redux'
-const SideBar = ({onlineUserIds}) => {
+const SideBar = () => {
   const currentUser = useSelector((state)=>state.user.currentUser);
-  console.log(currentUser);
-  const [isOnline,setOnline] = useState(false)
+  const onlineUserIds = useSelector((state)=>state.currentChat.onlineUsers);
 
-  console.log("online users")
-  console.log(onlineUserIds)
+  
+  const [isOnline,setOnline] = useState(false)
+console.log(onlineUserIds);
+  useEffect(()=>{
+    if(currentUser)
+    setOnline(onlineUserIds.includes(currentUser.userId))
+  },[onlineUserIds])
 
 
   return (
     <div className='bg-gray-800 border-r border-gray-700 text-white'>
         <div className='border-b-1 pb-3 border-b-gray-600 p-[1rem]'>
             <header className='flex justify-between items-center mb-4 '>
-                <h1 className='text-2xl font-extrabold'>BeeChat</h1>{
-               currentUser && <img src={currentUser.profilePic} alt="profile-pic" className='bg-black w-10 h-10 rounded-full' />
+                <h1 className='text-2xl font-extrabold'>BeeChat</h1>
+                <div className='relative'>
+
+                
+                {
+                  
+               currentUser && <img src={currentUser.profilePic} alt={currentUser.username} className='bg-black w-10 h-10 rounded-full' />
 }
                 {
                   isOnline &&
-                  <p>isOnline</p>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full"></div>
                 }
+                </div>
             </header>
             <Search />
         </div>

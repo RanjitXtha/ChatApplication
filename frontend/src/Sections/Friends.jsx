@@ -1,10 +1,10 @@
 import axios from '../utils/axios.js'
 import React, { useEffect, useState } from 'react'
 import Friend from '../Components/Friend.jsx';
-
+import { useSelector } from 'react-redux';
 const Friends = () => {
     const [friends , setFriends] = useState([]);
-   
+     const onlineUserIds = useSelector((state)=>state.currentChat.onlineUsers);
   
     useEffect(()=>{
         const getFriends = async()=>{
@@ -32,7 +32,7 @@ const Friends = () => {
       
           <ul>
             {friends.map((user) => (
-              <Friend key={user._id} 
+              <Friend  key={user._id} 
               user={user} />
             ))}
           </ul>
