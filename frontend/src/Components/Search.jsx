@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import axios from '../utils/axios.js';
-import { useSelector } from 'react-redux';
+import { useSelector , useDispatch } from 'react-redux';
 import { IoSearchOutline } from "react-icons/io5";
+import { setCurrentChatUser , setCurrentChat } from '../utils/currentChat.js';
 
 const Search = () => {
-  const currentUser = useSelector((state) => state.user.currentUser);
+    const dispatch = useDispatch();
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]); // 🆕 Store searched users
 
@@ -36,9 +37,11 @@ const Search = () => {
   }
 };
 
-  const handleFriend = (friendId)=>{
+  const handleFriend = (user)=>{
+    console.log(user)
     console.log("add friend activated")
-    addFriend(friendId);
+    addFriend(user._id);
+    dispatch(setCurrentChatUser(user));
   }
 
   return (
@@ -59,23 +62,32 @@ const Search = () => {
        
        
       </div>
-
       {results.length > 0 && (
-        <div className="bg-white p-4 rounded shadow-md">
-          <h3 className="text-lg font-semibold mb-2">Search Results:</h3>
           <ul>
             {results.map((user) => (
-              <li key={user._id} onClick={()=>handleFriend(user._id)} className="mb-2 flex items-center gap-3">
-                <img
-                  src={user.profilePic || '/default-avatar.png'}
-                  alt={user.username}
-                  className="w-8 h-8 rounded-full"
-                />
-                <span>{user.username}</span>
-              </li>
+              <div onClick={()=>handleFriend(user)}
+              key={user._id}
+              className={`mx-3 my-1 rounded-2xl cursor-pointer transition-all duration-200 hover:bg-gray-700 
+               
+              `}
+            >
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <img src={user.profilePic} alt={user.username} className="w-12 h-12 bg-gray-600 rounded-2xl flex items-center justify-center text-xl">
+                    
+                  </img>
+                
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-white truncate">{user.username}</h3>
+                  </div>
+              
+                </div>
+              </div>
+            </div>
             ))}
           </ul>
-        </div>
       )}
     </div>
   );

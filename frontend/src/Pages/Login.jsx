@@ -1,8 +1,11 @@
 // src/pages/Login.jsx
 import { useState } from 'react';
 import axios from '../utils/axios.js'; 
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../utils/authSlice.js';
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [form, setForm] = useState({ email: '', password: '' });
 
   const handleChange = (e) =>
@@ -14,7 +17,9 @@ const Login = () => {
     try {
       const res = await axios.post('/auth/login', form);
       console.log(res.data);
+      
       alert('Login successful');
+      dispatch(setCredentials(res.data))
     } catch (err) {
       alert(err.response?.data?.message || 'Login failed');
     }

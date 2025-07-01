@@ -30,8 +30,10 @@ export const Login = async(req,res)=>{
 }
 
 export const Signup= async(req,res)=>{
+    console.log("signup")
     try{
         const {email,username,password} = req.body;
+        
         const profilePic = req.file ? req.file.path : null;
 
         const userExists = await User.findOne({email});

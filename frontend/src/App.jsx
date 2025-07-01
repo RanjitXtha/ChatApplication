@@ -6,11 +6,12 @@ import Login from './Pages/Login'
 import SignUp from './Pages/SignUp'
 import { useEffect } from 'react'
 import axios from './utils/axios.js';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { setCredentials } from './utils/authSlice.js'
 
 function App() {
   const dispatch = useDispatch();
+  // const currentUser = useSelector((state)=>state.user.currentUser)
   
   useEffect(()=>{
 
@@ -19,6 +20,8 @@ function App() {
       const response = await axios.get('/auth/getUser',{
         withCredentials:true
       })
+
+     
       dispatch(setCredentials(response.data))
       
 }catch(err){
@@ -27,8 +30,9 @@ function App() {
 
     }
 
-    getUser()
-    
+  
+      getUser()
+      
   },[])
 
   return (

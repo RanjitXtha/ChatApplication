@@ -17,22 +17,28 @@ const io = new Server(server,{
 const onlineUsers = new Map();
 
 io.on("connection",(socket)=>{
-    console.log("user connected",socket.id)
+   
 
     socket.on('addUser', (userId) => {
       
-        
+      
         onlineUsers.set(userId, socket.id);
+           console.log("user connected",socket.id)
+         io.emit('onlineUsers', Array.from(onlineUsers.keys()));
         console.log(onlineUsers)
     });
 
-  socket.on('sendMessage', ({ senderId, receiverId, content }) => {
-    const receiverSocketId = onlineUsers.get(receiverId);
+  socket.on('sendMessage', ({ senderId, recieverId, content, image,_id,createdAt }) => {
+    console.log({ senderId, recieverId, content, image,_id,createdAt })
+    const receiverSocketId = onlineUsers.get(recieverId);
+    console.log(receiverSocketId)
     if (receiverSocketId) {
       io.to(receiverSocketId).emit('receiveMessage', {
+        _id,
         senderId,
         content,
-        createdAt: new Date(),
+        createdAt,
+        image:image
       });
     }
   });
@@ -44,7 +50,9 @@ io.on("connection",(socket)=>{
       onlineUsers.delete(userId);
       break;
     }
+    
   }
+   io.emit('onlineUsers', Array.from(onlineUsers.keys()));
     })
 })
 export {io,app,server};

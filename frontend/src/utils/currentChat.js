@@ -3,18 +3,18 @@ import { createSlice } from "@reduxjs/toolkit";
 const currentChatSlice = createSlice({
     name:"currentChat",
     initialState:{
-        currentChatId:null
+        currentChatUser:null,
     },
     reducers:{
-        setCurrentChat : (state,action)=>{
-            state.currentChatId = action.payload; 
+        clearCurrentChatUser: (state)=>{
+            state.currentChatUser = null;
         },
-        clearCurrentChat: (state)=>{
-            state.currentChatId = null;
+        setCurrentChatUser:(state,action)=>{
+            state.currentChatUser = action.payload;
         }
     }
 
 })
 
-export const {setCurrentChat  , clearCurrentChat}  = currentChatSlice.actions;
+export const {setCurrentChat  , clearCurrentChat , setCurrentChatUser}  = currentChatSlice.actions;
 export default currentChatSlice.reducer;
