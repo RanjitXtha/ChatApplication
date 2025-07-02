@@ -6,6 +6,7 @@ import { setCredentials } from '../utils/authSlice';
 
 const Profile = () => {
   const user = useSelector((state) => state.user.currentUser);
+  console.log(user)
   const dispatch = useDispatch();
 
   const [editing, setEditing] = useState(false);
@@ -85,7 +86,7 @@ const Profile = () => {
         {/* Email (Read-only) */}
         <div className="mb-4">
           <label className="text-sm text-gray-400">Email</label>
-          <div className="flex items-center gap-2 bg-gray-700 text-gray-400 px-4 py-3 rounded-xl mt-1">
+          <div className="flex items-center gap-2 text-gray-400  rounded-xl mt-1">
             <FiMail size={18} />
             <span>{user.email}</span>
           </div>
@@ -104,7 +105,7 @@ const Profile = () => {
                 className="w-full bg-gray-700 border border-gray-600 text-white rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             ) : (
-              <span className="text-white bg-gray-700 px-4 py-2 rounded-xl">{user.username}</span>
+              <span className="text-white  py-2 rounded-xl">{user.username}</span>
             )}
           </div>
         </div>

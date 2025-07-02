@@ -56,6 +56,12 @@ const Search = () => {
           placeholder="Search users..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e)=>{
+            if(e.key==="Space"){
+              e.preventDefault();
+              searchUser();
+            }
+          }}
           className="w-full bg-gray-700 border border-gray-600 rounded-2xl pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
         />
       </div>

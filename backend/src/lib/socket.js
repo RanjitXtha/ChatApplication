@@ -23,9 +23,9 @@ io.on("connection",(socket)=>{
       
       
         onlineUsers.set(userId, socket.id);
-           console.log("user connected",socket.id)
+        
          io.emit('onlineUsers', Array.from(onlineUsers.keys()));
-        console.log(onlineUsers)
+      
     });
 
   socket.on('sendMessage', ({ senderId, recieverId, content, image,_id,createdAt }) => {

@@ -37,9 +37,7 @@ const ChatSection = () => {
         createdAt: new Date(),
       },
     ]);
-
-
-    console.log('message set')
+    
     setContent('');
     setSendFile(null);
     setPreview(null);
@@ -53,7 +51,6 @@ const ChatSection = () => {
       });
 
       const sentMessage = res.data.newMessage;
-      console.log(sentMessage)
 
       socket.emit('sendMessage', {
         _id: sentMessage._id,

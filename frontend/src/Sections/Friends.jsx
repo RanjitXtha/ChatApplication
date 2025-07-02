@@ -17,7 +17,6 @@ const Friends = () => {
             })
             setFriends(res.data.friends);
 
-            console.log(res.data.friends);   
               }catch(err){
                 console.log(err);
               }
@@ -28,6 +27,7 @@ const Friends = () => {
   return (
    
     <div>
+      <h1 className='p-4 text-lg font-bold'>Friends</h1>
   {friends.length > 0 ?   <div className="py-1 flex-1 overflow-y-auto">
       
           <ul>

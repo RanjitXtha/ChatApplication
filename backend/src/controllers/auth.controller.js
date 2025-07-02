@@ -21,7 +21,8 @@ export const Login = async(req,res)=>{
     return res.status(201).json({
             userId:user._id,
             username:user.username,
-            profilePic:user.profilePic
+            profilePic:user.profilePic,
+            email:user.email,
         });
     }catch(error){
         console.log(error);
@@ -53,7 +54,8 @@ export const Signup= async(req,res)=>{
         return res.status(201).json({
             userId:user._id,
             username:user.username,
-            profilePic:user.profilePic
+            profilePic:user.profilePic,
+            email:user.email,
         });
     }catch(error){
         console.log(error);
@@ -62,6 +64,8 @@ export const Signup= async(req,res)=>{
 }
 
 export const LogOut= async(req,res)=>{
+    res.clearCookie('jwttoken');
+    return res.status(200).json({message:'Logged Out'})
     
 }
 
@@ -71,7 +75,8 @@ export const GetUser = async(req,res)=>{
     return res.status(200).json({
         userId:user._id,
         username:user.username,
-        profilePic:user.profilePic
+        profilePic:user.profilePic,
+        email:user.email,
     })
 
 }

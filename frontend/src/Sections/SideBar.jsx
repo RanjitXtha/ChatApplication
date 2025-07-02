@@ -1,18 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import Search from '../Components/Search'
 import Friends from './Friends'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from '../utils/axios';
+import { clearCredentials } from '../utils/authSlice';
+import AllUsers from './AllUsers';
 const SideBar = () => {
   const currentUser = useSelector((state)=>state.user.currentUser);
   const onlineUserIds = useSelector((state)=>state.currentChat.onlineUsers);
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   
   const [isOnline,setOnline] = useState(false)
-console.log(onlineUserIds);
   useEffect(()=>{
     if(currentUser)
     setOnline(onlineUserIds.includes(currentUser.userId))
-  },[onlineUserIds])
+  },[onlineUserIds]);
+
+  const handleLogout = async()=>{
+    await axios.get('/auth/logout');
+    console.log('logged out');
+    dispatch(clearCredentials());
+    navigate('/login')
+  }
 
 
   return (
@@ -25,7 +36,17 @@ console.log(onlineUserIds);
                 
                 {
                   
-               currentUser && <img src={currentUser.profilePic} alt={currentUser.username} className='bg-black w-10 h-10 rounded-full' />
+               currentUser && 
+               <div className='relative group'>
+               <img src={currentUser.profilePic} alt={currentUser.username} className='bg-black w-10 h-10 rounded-full' />
+               <div className='hidden group-hover:block absolute w-[10rem] top-[2rem] z-50 p-4 bg-gray-800 border-[1px] border-gray-700'>
+                  <p>{currentUser.username}</p>
+                  <Link to="/profile">Profile</Link><br />
+                  <button onClick={handleLogout}>Logout</button>
+
+               </div>
+              </div>
+              
 }
                 {
                   isOnline &&
@@ -37,7 +58,7 @@ console.log(onlineUserIds);
         </div>
 
         <Friends />
-
+        <AllUsers />
         
         
          

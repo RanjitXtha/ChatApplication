@@ -121,3 +121,17 @@ try{
         return res.status(500).json({message:err})
     }
 }
+
+
+export const getAllUsers = async(req,res)=>{
+  const id = req.params.id;
+
+  console.log("fetching users")
+  try{
+    const allUsers = await User.find({_id:{$ne:id}});
+    console.log(allUsers)
+    return res.status(200).json({allUsers})
+  }catch(err){
+    console.log("Error".err)
+  }
+}
