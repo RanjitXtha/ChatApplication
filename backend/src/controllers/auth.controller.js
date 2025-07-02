@@ -75,3 +75,36 @@ export const GetUser = async(req,res)=>{
     })
 
 }
+
+
+export const UpdateProfile = async(req,res)=>{
+    const {username,password} = req.body;
+    const userId = req.user._id;
+    const profilePic =   req.file ? req.file.path : null;
+        const updateData = {};
+
+        try{
+
+    if (username) updateData.username = username;
+
+     if (password) {
+      const salt = await bcrypt.genSalt(10);
+      updateData.password = await bcrypt.hash(password, salt);
+    }
+
+     if (req.file) {
+      updateData.profilePic = profilePic;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      select: '-password', 
+    });
+
+       res.status(200).json(updatedUser);
+  } catch (err) {
+    console.error('Update failed:', err);
+    res.status(500).json({ message: 'Failed to update user' });
+  }
+
+}

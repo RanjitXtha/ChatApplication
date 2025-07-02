@@ -121,7 +121,7 @@ const ChatSection = () => {
 
   return (
     contact._id &&
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen text-white">
       <div className="bg-gray-800 border-b border-gray-700 p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">

@@ -36,8 +36,8 @@ useEffect(() => {
     <div className="grid grid-cols-[1fr_3fr] h-screen  ">
       <SideBar />
       {
-currentChatUser &&
- <ChatSection />
+currentChatUser?
+ <ChatSection />:<div className='bg-gray-800 text-white border-b border-gray-700 p-4'>Select user to start chatting.....</div>
       }
     
       {/* <Search />

@@ -8,10 +8,11 @@ import { useEffect } from 'react'
 import axios from './utils/axios.js';
 import {useDispatch, useSelector} from 'react-redux';
 import { setCredentials } from './utils/authSlice.js'
+import Profile from './Pages/Profile.jsx'
 
 function App() {
   const dispatch = useDispatch();
-  // const currentUser = useSelector((state)=>state.user.currentUser)
+  const currentUser = useSelector((state)=>state.user.currentUser)
   
   useEffect(()=>{
 
@@ -39,9 +40,10 @@ function App() {
     <Router>
       <Routes>
         <Route path="/">
-          <Route index element={<Home />}/>
-          <Route path="login" element={<Login />}/>
-          <Route path="signup" element={<SignUp />}/>
+          <Route index element={currentUser?<Home />:<Login/>}/>
+          <Route path="login" element={currentUser?<Home />:<Login />}/>
+          <Route path="signup" element={currentUser?<Home />:<SignUp />}/>
+          <Route path="profile" element={currentUser?<Profile />:<Login />}/>
         </Route>
       </Routes>
     </Router>
