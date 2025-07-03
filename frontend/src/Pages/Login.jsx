@@ -4,7 +4,7 @@ import { FiEye, FiEyeOff, FiMail, FiLock, FiArrowRight } from 'react-icons/fi';
 import axios from '../utils/axios.js'; 
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../utils/authSlice.js';
-import {useNavigate} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -26,6 +26,7 @@ const Login = () => {
       console.log(res.data);
 
       alert('Login successful');
+      console.log(res.data)
       dispatch(setCredentials(res.data));
       navigate('/')
     } catch (err) {
@@ -122,7 +123,7 @@ const Login = () => {
                 </>
               ) : (
                 <>
-                  Sign In
+                  Login
                   <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-200" size={18} />
                 </>
               )}
@@ -142,7 +143,7 @@ const Login = () => {
                 className="ml-1 text-blue-500 hover:text-blue-400 font-medium transition-colors duration-200"
                 disabled={isLoading}
               >
-                Sign up
+                <Link to="/signup">Sign Up</Link>
               </button>
             </p>
           </div>

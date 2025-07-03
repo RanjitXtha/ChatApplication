@@ -26,11 +26,11 @@ const AllUsers = () => {
       
           <ul>
             {users.map((user) => (
-              <Friend  key={user._id} 
+              <Friend  key={user._id}  listType={'allusers'}
               user={user} />
             ))}
           </ul>
-        </div>:<div>Loading</div>
+        </div>:<div></div>
   }
     </div>
   )

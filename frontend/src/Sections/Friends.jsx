@@ -27,16 +27,16 @@ const Friends = () => {
   return (
    
     <div>
-      <h1 className='p-4 text-lg font-bold'>Friends</h1>
+      <h1 className='p-4 text-lg font-bold'>Friends<div className='text-sm font-extralight'>(Search friend to add as friend)</div></h1>
   {friends.length > 0 ?   <div className="py-1 flex-1 overflow-y-auto">
       
           <ul>
             {friends.map((user) => (
-              <Friend  key={user._id} 
+              <Friend  key={user._id} listType={'friends'}
               user={user} />
             ))}
           </ul>
-        </div>:<div>Loading</div>
+        </div>:<div></div>
   }
     </div>
   )

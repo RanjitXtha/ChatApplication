@@ -31,9 +31,7 @@ const SideBar = () => {
         <div className='border-b-1 pb-3 border-b-gray-600 p-[1rem]'>
             <header className='flex justify-between items-center mb-4 '>
                 <h1 className='text-2xl font-extrabold'>BeeChat</h1>
-                <div className='relative'>
-
-                
+                <div className='relative'>       
                 {
                   
                currentUser && 

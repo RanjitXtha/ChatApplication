@@ -1,15 +1,33 @@
 import React, { useState } from 'react'
 import { useDispatch , useSelector } from 'react-redux'
 import { setCurrentChatUser } from '../utils/currentChat';
-
-const Friend = ({user}) => {
+import axios from '../utils/axios'
+const Friend = ({user,listType}) => {
 
   const currentChatId = useSelector(state=>state.currentChat.currentChatUser?._id);
        const onlineUserIds = useSelector((state)=>state.currentChat.onlineUsers);
 
+  const addFriend = async (friendId) => {
+  try {
+    const res = await axios.post(
+      `/chat/add-friend`,
+      { friendId },
+      { withCredentials: true }
+    );
+    alert(res.data.message);
+  } catch (err) {
+    alert(err.response?.data?.message || 'Error adding friend');
+  }
+};
+
+
   const dispatch = useDispatch();
   const handleCurrentChatUser = (user)=>{
     dispatch(setCurrentChatUser(user));
+    if(listType==="allusers"){
+      addFriend(user._id)
+    }
+   
    
   } 
   return (

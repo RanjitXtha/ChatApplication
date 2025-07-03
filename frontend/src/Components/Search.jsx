@@ -57,7 +57,7 @@ const Search = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={(e)=>{
-            if(e.key==="Space"){
+            if(e.key==="Enter"){
               e.preventDefault();
               searchUser();
             }

@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 import { FiMail, FiUser, FiLock, FiImage, FiArrowRight } from 'react-icons/fi';
 import axios from '../utils/axios';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../utils/authSlice.js';
 const SignUp = () => {
   const [formData, setFormData] = useState({
     email: '',
     username: '',
     password: '',
   });
+  const navigate= useNavigate();
   const [profilePic, setProfilePic] = useState(null);
   const [preview, setPreview] = useState(null);
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+ const dispatch = useDispatch();
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -51,6 +55,9 @@ const SignUp = () => {
       });
 
       setMessage(`Welcome, ${res.data.username}!`);
+      console.log(res.data)
+      dispatch(setCredentials(res.data));
+      navigate('/')
     } catch (err) {
       const errMsg = err.response?.data?.message || 'Signup failed';
       setMessage(errMsg);
@@ -64,7 +71,7 @@ const SignUp = () => {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">ChatFlow</h1>
+          <h1 className="text-3xl font-bold text-white mb-2">BeeChat</h1>
           <p className="text-gray-400">Create a new account to get started</p>
         </div>
 
@@ -136,7 +143,7 @@ const SignUp = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Enter a strong password"
+                  placeholder="Enter a password"
                   className="w-full bg-gray-700 border border-gray-600 rounded-xl pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   required
                   disabled={isLoading}
@@ -181,7 +188,7 @@ const SignUp = () => {
                 </>
               ) : (
                 <>
-                  Sign Up
+                  <Link to="/signup">Sign Up</Link>
                   <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-200" size={18} />
                 </>
               )}
@@ -194,7 +201,7 @@ const SignUp = () => {
           <p className="text-gray-500 text-sm">
             Already have an account?{' '}
             <button className="text-blue-500 hover:text-blue-400 font-medium transition-colors duration-200">
-              Sign in
+              <Link to="/login">Log In</Link>
             </button>
           </p>
         </div>
