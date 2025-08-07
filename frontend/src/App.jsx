@@ -14,7 +14,7 @@ import ProtectedRoute from './Components/ProtectedRoute.jsx'
 
 function App() {
   const dispatch = useDispatch();
-  
+  console.log("test");
   useEffect(()=>{
 
     const getUser = async()=>{
