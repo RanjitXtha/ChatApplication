@@ -2,7 +2,7 @@ import axios from '../utils/axios.js'
 import React, { useEffect, useState } from 'react'
 import Friend from '../Components/Friend.jsx';
 import { useSelector } from 'react-redux';
-const Friends = () => {
+const Friends = ({unreadMessages}) => {
     const [friends , setFriends] = useState([]);
      const onlineUserIds = useSelector((state)=>state.currentChat.onlineUsers);
   
@@ -31,10 +31,11 @@ const Friends = () => {
   {friends.length > 0 ?   <div className="py-1 flex-1 overflow-y-auto">
       
           <ul>
-            {friends.map((user) => (
-              <Friend  key={user._id} listType={'friends'}
+            {friends.map((user) => {
+              const unreadCount = unreadMessages.find(msg=>msg.senderId._id.toString() === user._id.toString())?.count || 0;
+              return <Friend unreadCount={unread} key={user._id} listType={'friends'}
               user={user} />
-            ))}
+})}
           </ul>
         </div>:<div></div>
   }

@@ -2,7 +2,6 @@ import { useRef , useEffect } from 'react';
 
 const Messages = ({messages,currentUser,contact}) => {
       const bottomRef = useRef(null);
-
         useEffect(() => {
             if (bottomRef.current) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
@@ -13,17 +12,17 @@ const Messages = ({messages,currentUser,contact}) => {
             {messages.map((msg, index) => (
               <div
                 key={msg._id || `temp-${index}`}
-                className={`flex ${msg.senderId === currentUser.userId ? 'justify-end' : 'justify-start'} animate-fadeIn`}
+                className={`flex ${msg.senderId._id === currentUser.userId ? 'justify-end' : 'justify-start'} animate-fadeIn`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className={`flex items-end space-x-2 max-w-xs lg:max-w-md ${msg.senderId === currentUser.userId ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                  {msg.senderId !== currentUser.userId && (
-                    <img src={contact.profilePic} className="w-8 h-8 bg-gray-600 rounded-xl flex items-center justify-center text-sm flex-shrink-0" />
+                <div className={`flex items-end space-x-2 max-w-xs lg:max-w-md ${msg.senderId._id === currentUser.userId ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                  {msg.senderId._id !== currentUser.userId && (
+                    <img src={msg.senderId.profilePic} className="w-8 h-8 bg-gray-600 rounded-xl flex items-center justify-center text-sm flex-shrink-0" />
                       
                     
                   )}
                   <div
-                    className={`px-4 py-3 rounded-2xl ${msg.senderId === currentUser.userId
+                    className={`px-4 py-3 rounded-2xl ${msg.senderId._id === currentUser.userId
                         ? 'bg-blue-600 text-white rounded-br-md'
                         : 'bg-gray-700 text-white rounded-bl-md'
                       } shadow-lg transition-all duration-200`}

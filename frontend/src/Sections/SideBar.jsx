@@ -6,7 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from '../utils/axios';
 import { clearCredentials } from '../utils/authSlice';
 import AllUsers from './AllUsers';
-const SideBar = () => {
+import GroupChat from './Groups';
+const SideBar = ({unreadMessages}) => {
   const currentUser = useSelector((state)=>state.user.currentUser);
   const onlineUserIds = useSelector((state)=>state.currentChat.onlineUsers);
   const navigate = useNavigate();
@@ -27,7 +28,8 @@ const SideBar = () => {
 
 
   return (
-    <div className='bg-gray-800 border-r border-gray-700 text-white'>
+    <div className='bg-gray-800 border-r border-gray-700 text-white overflow-y-auto'>
+      <p>{unreadMessages?.length}</p>
         <div className='border-b-1 pb-3 border-b-gray-600 p-[1rem]'>
             <header className='flex justify-between items-center mb-4 '>
                 <h1 className='text-2xl font-extrabold'>BeeChat</h1>
@@ -37,7 +39,7 @@ const SideBar = () => {
                currentUser && 
                <div className='relative group'>
                <img src={currentUser.profilePic} alt={currentUser.username} className='bg-black w-10 h-10 rounded-full' />
-               <div className='hidden group-hover:block absolute w-[10rem] top-[2rem] z-50 p-4 bg-gray-800 border-[1px] border-gray-700'>
+               <div className=' hidden group-hover:block absolute w-[10rem] right-[1rem] top-[2rem] z-100 p-4 bg-gray-800 border-[1px] border-gray-700'>
                   <p>{currentUser.username}</p>
                   <Link to="/profile">Profile</Link><br />
                   <button onClick={handleLogout}>Logout</button>
@@ -55,8 +57,10 @@ const SideBar = () => {
             <Search />
         </div>
 
-        <Friends />
+        <Friends unreadMessages={unreadMessages}/>
+        <GroupChat unreadMessages={unreadMessages} />
         <AllUsers />
+      
         
         
          

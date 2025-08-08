@@ -1,0 +1,60 @@
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setCurrentChatUser , setCurrentChatType } from '../utils/currentChat';
+import axios from '../utils/axios'
+import socket from '../utils/socket';
+const Group = ({ group }) => {
+
+    const currentChatId = useSelector(state => state.currentChat.currentChatUser?._id);
+    const onlineUserIds = useSelector((state) => state.currentChat.onlineUsers);
+
+    const dispatch = useDispatch();
+
+    const handleCurrentChatGroup = () => {
+        const groupData = {
+            _id: group._id,
+            username:group.name,
+            profilePic:""
+        }
+        dispatch(setCurrentChatUser(groupData));
+        dispatch(setCurrentChatType("group"))
+
+        socket.emit("group:join",group._id);
+
+    }
+    return (
+        <div onClick={handleCurrentChatGroup}
+            className={`p-4 mx-3 my-1 rounded-2xl cursor-pointer transition-all duration-200 hover:bg-gray-700 ${currentChatId === group._id
+                ? 'bg-gray-700 border border-blue-500'
+                : ''
+                }`}
+        >
+            <div className="flex items-center space-x-3">
+                <div className="relative">
+                    {/* <img src={user.profilePic} alt={user.username} className="w-12 h-12 bg-gray-600 rounded-2xl flex items-center justify-center text-xl"> */}
+
+{/*                     
+                    {onlineUserIds.includes(group._id) ? (
+                        <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full"></div>
+                    ) : <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-gray-500 rounded-full"></div>} */}
+                </div>
+                <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                        <h3 className="font-semibold text-white truncate">{group.name}</h3>
+                        {/* <span className="text-xs text-gray-400">{contact.time}</span> */}
+                    </div>
+                    {/* <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-400 truncate">{contact.lastMsg}</p>
+                    {contact.unread > 0 && (
+                      <span className="bg-blue-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
+                        {contact.unread}
+                      </span>
+                    )}
+                  </div> */}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Group

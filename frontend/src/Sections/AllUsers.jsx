@@ -14,7 +14,6 @@ const AllUsers = () => {
         const getUsers = async()=>{
             const res=  await axios.get(`/chat/getAllUsers/${currentUser.userId}`);
             setUsers(res.data.allUsers);
-            console.log(res.data.allUsers)
         }
         getUsers();
     },[currentUser]);

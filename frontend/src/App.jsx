@@ -11,6 +11,7 @@ import { setCredentials } from './utils/authSlice.js'
 import Profile from './Pages/Profile.jsx'
 import PublicRoute from './Components/PublicRoute.jsx'
 import ProtectedRoute from './Components/ProtectedRoute.jsx'
+import CreateGroup from './Pages/CreateGroup.jsx'
 
 function App() {
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ function App() {
           <Route path="login" element={<PublicRoute><Login /></PublicRoute>}/>
           <Route path="signup" element={<PublicRoute><SignUp /></PublicRoute>}/>
           <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>}/>
+          <Route path="create-group" element={<ProtectedRoute><CreateGroup /></ProtectedRoute>}/>
         </Route>
       </Routes>
     </Router>

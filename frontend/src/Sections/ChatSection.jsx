@@ -5,9 +5,12 @@ import socket from '../utils/socket.js';
 import Messages from '../Components/Messages.jsx';
 import MessageInput from '../Components/MessageInput.jsx';
 
-const ChatSection = () => {
+const ChatSection = ({ setUnreadMessages, unreadMessages }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const contact = useSelector((state) => state.currentChat.currentChatUser);
+  const chatType = useSelector((state) => state.currentChat.currentChatType);
+
+
 
   const [content, setContent] = useState('');
   const [messages, setMessages] = useState([]);
@@ -25,17 +28,7 @@ const ChatSection = () => {
     if (sendFile) {
       newMessage.append('image', sendFile);
     }
-    setMessages((prev) => [
-      ...prev,
-      {
-        content,
-        senderId: currentUser.userId,
-        receiverId: contact._id,
-        image: preview,
-        createdAt: new Date(),
-      },
-    ]);
-    
+
     setContent('');
     setSendFile(null);
     setPreview(null);
@@ -49,15 +42,21 @@ const ChatSection = () => {
       });
 
       const sentMessage = res.data.newMessage;
+      console.log("sentMessage", sentMessage);
 
-      socket.emit('sendMessage', {
-        _id: sentMessage._id,
-        content: sentMessage.content,
-        senderId: sentMessage.senderId,
-        recieverId: sentMessage.recieverId,
-        image: sentMessage.image || null,
-        createdAt: sentMessage.createdAt,
-      });
+      if (chatType === "group") {
+        console.log("sending group message")
+        socket.emit("group:sendMessage", sentMessage)
+
+      } else {
+        console.log("receiving user message")
+        setMessages((prev) => [
+          ...prev,
+          sentMessage
+        ]);
+
+        socket.emit('sendMessage', sentMessage);
+      }
     } catch (err) {
       console.error('Failed to store message in DB:', err);
     }
@@ -68,7 +67,7 @@ const ChatSection = () => {
       if (!contact._id) return;
 
       try {
-        const res = await axios.get(`/chat/message/${contact._id}`, {
+        const res = await axios.get(`/chat/message/${contact._id}?chatType=${chatType}`, {
           withCredentials: true,
         });
 
@@ -84,16 +83,66 @@ const ChatSection = () => {
 
 
   useEffect(() => {
+    if (chatType === "group" && contact._id) {
+      socket.emit("group:join", contact._id);
+      console.log("Joined group socket room:", contact._id);
+    }
+  }, [chatType, contact._id]);
+
+  useEffect(() => {
     if (!currentUser) return;
 
-    socket.on('receiveMessage', (data) => {
-      if (data.senderId === contact._id || data.receiverId === contact._id) {
-        setMessages((prev) => [...prev, data]);
-      }
+    if (chatType === "group") {
+      console.log("receiving group message")
+      socket.on("group:recieveMessage", (message) => {
+        console.log("group:recieveMessage", message);
+        console.log("contact_id", contact._id);
+
+        if ((message.recieverId === contact._id)) {
+          setMessages((prev) => [...prev, message]);
+
+        }
+      })
+    } else {
+      console.log("receiving user message")
+
+      socket.on('receiveMessage', (data) => {
+        console.log("data", data);
+
+
+        console.log("contact_id", contact._id);
+        if ((data.recieverId === currentUser.userId) && (data.senderId._id === contact._id)) {
+
+          setMessages((prev) => [...prev, data]);
+
+        }else{
+                  setUnreadMessages(prev => [...prev, data]);
+
+        }
+
+
+      });
+    }
+
+
+
+    return () => {
+      socket.off('receiveMessage');
+      socket.off('group:recieveMessage');
+    }
+
+  }, [currentUser, contact._id]);
+
+  useEffect(() => {
+    socket.emit("markAsRead", {
+      fromUserId: contact._id,
+      toUserId: currentUser.userId,
     });
 
-    return () => socket.off('receiveMessage');
-  }, [currentUser, contact._id]);
+    setUnreadMessages(prev => {
+      return prev.filter(messages => messages.senderId._id !== contact._id);
+    })
+  }, [contact._id]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -114,24 +163,28 @@ const ChatSection = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="relative">
-              <img src={contact.profilePic} alt={contact.username} className="w-10 h-10 bg-gray-600 rounded-xl flex items-center justify-center">
+              <img src={contact?.profilePic} alt={contact.username} className="w-10 h-10 bg-gray-600 rounded-xl flex items-center justify-center">
 
               </img>
             </div>
             <div>
               <h2 className="font-semibold text-lg">{contact.username}</h2>
+              {
+                chatType === "group" && <p>{contact._id}</p>
+              }
+
             </div>
           </div>
         </div>
       </div>
 
-      
+
       <Messages contact={contact} currentUser={currentUser} messages={messages} />
 
       <MessageInput setPreview={setPreview} setSendFile={setSendFile} handleFileChange={handleFileChange}
-      setContent={setContent} handleMessage={handleMessage} preview={preview} content={content} />
+        setContent={setContent} handleMessage={handleMessage} preview={preview} content={content} />
 
-
+      {/* 
       <style jsx>{`
         @keyframes fadeIn {
           from {
@@ -167,7 +220,7 @@ const ChatSection = () => {
         ::-webkit-scrollbar-thumb:hover {
           background: #2563eb;
         }
-      `}</style>
+      `}</style> */}
 
     </div>
   );
