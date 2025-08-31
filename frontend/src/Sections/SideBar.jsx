@@ -12,7 +12,7 @@ const SideBar = ({unreadMessages}) => {
   const onlineUserIds = useSelector((state)=>state.currentChat.onlineUsers);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  //this is a test
+  //
   const [isOnline,setOnline] = useState(false)
   useEffect(()=>{
     if(currentUser)
